@@ -26,7 +26,7 @@ class Model_Agnostic_Meta_Learning(tf.keras.models.Model):
     def build(self, input_shape):
         super(Model_Agnostic_Meta_Learning, self).build(input_shape)
 
-    def call(self, x):
+    def call(self, x, **kwargs):
         x = self.hidden_layer_1(x)
         x = self.hidden_layer_2(x)
         x = self.output_layer(x)
