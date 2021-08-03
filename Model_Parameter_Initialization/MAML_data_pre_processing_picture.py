@@ -2,7 +2,7 @@ from Data_Pre_analysis.Power_Decreasing_Finally_Data import power_decreasing
 import tensorflow as tf
 import numpy as np
 from sklearn import manifold
-from sklearn.model_selection import train_test_split
+# from sklearn.model_selection import train_test_split
 import os
 
 
@@ -18,7 +18,7 @@ hidden_layers_nodes = 69
 learning_rate = 0.0001491072657856008
 batch_size = 1
 epochs_size = 200
-all_epochs = [1, 2, 3, 4, 5, 10, 50, 100]
+all_epochs = [1, 2, 3, 5]
 
 pressurizer_water_y = power_decreasing[..., -3]
 pressurizer_water_x = np.delete(power_decreasing, -3, axis=1)
@@ -27,14 +27,14 @@ pressurizer_water_x = np.delete(power_decreasing, -3, axis=1)
 lle = manifold.LocallyLinearEmbedding(n_neighbors=30, n_components=data_dimension, method='standard')
 pressurizer_water_x = lle.fit_transform(pressurizer_water_x)
 
-pressurizer_water_x_test_1 = pressurizer_water_x[:300, ...]
-pressurizer_water_y_test_1 = pressurizer_water_y[:300]
+pressurizer_water_x_test_1 = pressurizer_water_x[:301, ...]
+pressurizer_water_y_test_1 = pressurizer_water_y[:301]
 
-pressurizer_water_x_test_2 = pressurizer_water_x[1511:1811, ...]
-pressurizer_water_y_test_2 = pressurizer_water_y[1511:1811]
+pressurizer_water_x_test_2 = pressurizer_water_x[1511:1812, ...]
+pressurizer_water_y_test_2 = pressurizer_water_y[1511:1812]
 
-x_train_pressurizer_water, x_test_pressurizer_water, y_train_pressurizer_water, y_test_pressurizer_water = \
-    train_test_split(pressurizer_water_x, pressurizer_water_y, test_size=0.3, random_state=0)
+# x_train_pressurizer_water, x_test_pressurizer_water, y_train_pressurizer_water, y_test_pressurizer_water = \
+#     train_test_split(pressurizer_water_x, pressurizer_water_y, test_size=0.3, random_state=0)
 
 for epoch in all_epochs:
     model = tf.keras.models.Sequential()
@@ -48,13 +48,11 @@ for epoch in all_epochs:
     model.compile(optimizer=tf.keras.optimizers.Adam(lr=learning_rate), loss=tf.keras.losses.MAPE,
                   metrics=[tf.keras.losses.MSE])
 
-    history = model.fit(x_train_pressurizer_water, y_train_pressurizer_water, batch_size=batch_size, epochs=epoch,
+    history = model.fit(pressurizer_water_x, pressurizer_water_y, batch_size=batch_size, epochs=epoch,
                         validation_split=0.2)
 
     # , callbacks=[tf.keras.callbacks.EarlyStopping(monitor='val_loss',
     #                                                                                           patience=20, verbose=0)]
-
-    y_predict = model.predict(x_test_pressurizer_water[:300, ...])
     y_predict_1 = model.predict(pressurizer_water_x_test_1)
     y_predict_2 = model.predict(pressurizer_water_x_test_2)
 
@@ -121,30 +119,6 @@ for epoch in all_epochs:
                 f.write(str(temp_list[i_value]) + ",")
             else:
                 f.write(str(temp_list[i_value]) + "\n")
-
-    file = path + "\\finally_calculations_y_predict_" + str(epoch) + ".txt"
-    if epoch == 1:
-        if os.path.exists(file):
-            os.remove(file)
-        with open(file, "w+") as f:
-            f.write("=========================\t" + "y_true" + "\t=========================\n")
-            temp_list = y_test_pressurizer_water
-            length = len(temp_list)
-            for i_value in np.arange(length):
-                if i_value != length - 1:
-                    f.write(str(temp_list[i_value]) + ",")
-                else:
-                    f.write(str(temp_list[i_value]) + "\n")
-            f.write("=========================\t" + "y_predict" + "\t=========================\n")
-
-    with open(file, "a") as f:
-        temp_list = y_predict
-        length = len(temp_list)
-        for i_value in np.arange(length):
-            if i_value != length - 1:
-                f.write(str(temp_list[i_value][0]) + ",")
-            else:
-                f.write(str(temp_list[i_value][0]) + "\n")
 
     file = path + "\\finally_calculations_y_predict_1_" + str(epoch) + ".txt"
     if epoch == 1:

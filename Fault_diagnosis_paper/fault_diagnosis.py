@@ -1,0 +1,35 @@
+from fault_diagnosis_function import *
+
+# is_accident_GBDT_LR("GBDT@PowerR")
+# is_accident_GBDT_LR("GBDT@PRLL")
+# is_accident_GBDT_LR("GBDT@PRSL")
+# is_accident_GBDT_LR("GBDT@CL_LOCA")
+# is_accident_GBDT_LR("GBDT@HL_LOCA")
+# is_accident_GBDT_LR("GBDT@SG2L")
+# is_accident_GBDT_LR("GBDT@SGTR")
+
+is_accident_SVM("SVM@PowerR")
+is_accident_SVM("SVM@PRLL")
+is_accident_SVM("SVM@PRSL")
+is_accident_SVM("SVM@CL_LOCA")
+is_accident_SVM("SVM@HL_LOCA")
+is_accident_SVM("SVM@SG2L")
+is_accident_SVM("SVM@SGTR")
+
+# is_accident_Adaboost("Ada@PowerR")
+# is_accident_Adaboost("Ada@PRLL")
+# is_accident_Adaboost("Ada@PRSL")
+# is_accident_Adaboost("Ada@CL_LOCA")
+# is_accident_Adaboost("Ada@HL_LOCA")
+# is_accident_Adaboost("Ada@SG2L")
+# is_accident_Adaboost("Ada@SGTR")
+
+# is_accident_kNN("kNN@PowerR")
+# is_accident_kNN("kNN@PRLL")
+# is_accident_kNN("kNN@PRSL")
+# is_accident_kNN("kNN@CL_LOCA")
+# is_accident_kNN("kNN@HL_LOCA")
+# is_accident_kNN("kNN@SG2L")
+# is_accident_kNN("kNN@SGTR")
+
+print("done...")

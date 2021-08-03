@@ -2,7 +2,7 @@ from Data_Pre_analysis.Power_Decreasing_Finally_Data import power_decreasing
 import tensorflow as tf
 import numpy as np
 from sklearn import manifold
-from sklearn.model_selection import train_test_split
+# from sklearn.model_selection import train_test_split
 import os
 
 
@@ -33,8 +33,8 @@ pressurizer_water_y_test_1 = pressurizer_water_y[:301]
 pressurizer_water_x_test_2 = pressurizer_water_x[1511:1812, ...]
 pressurizer_water_y_test_2 = pressurizer_water_y[1511:1812]
 
-x_train_pressurizer_water, x_test_pressurizer_water, y_train_pressurizer_water, y_test_pressurizer_water = \
-    train_test_split(pressurizer_water_x, pressurizer_water_y, test_size=0.3, random_state=0)
+# x_train_pressurizer_water, x_test_pressurizer_water, y_train_pressurizer_water, y_test_pressurizer_water = \
+#     train_test_split(pressurizer_water_x, pressurizer_water_y, test_size=0.3, random_state=0)
 
 for epoch in np.arange(all_epochs):
     model = tf.keras.models.Sequential()
@@ -48,10 +48,9 @@ for epoch in np.arange(all_epochs):
     model.compile(optimizer=tf.keras.optimizers.Adam(lr=learning_rate), loss=tf.keras.losses.MAPE,
                   metrics=[tf.keras.losses.MSE])
 
-    history = model.fit(x_train_pressurizer_water, y_train_pressurizer_water, batch_size=batch_size, epochs=epochs_size,
+    history = model.fit(pressurizer_water_x, pressurizer_water_y, batch_size=batch_size, epochs=epochs_size,
                         validation_split=0.2)
 
-    y_predict = model.predict(x_test_pressurizer_water[:301, ])
     y_predict_1 = model.predict(pressurizer_water_x_test_1)
     y_predict_2 = model.predict(pressurizer_water_x_test_2)
 
@@ -118,30 +117,6 @@ for epoch in np.arange(all_epochs):
                 f.write(str(temp_list[i_value]) + ",")
             else:
                 f.write(str(temp_list[i_value]) + "\n")
-
-    file = path + "\\finally_calculations_y_predict.txt"
-    if epoch == 0:
-        if os.path.exists(file):
-            os.remove(file)
-        with open(file, "w+") as f:
-            f.write("=========================\t" + "y_true" + "\t=========================\n")
-            temp_list = y_test_pressurizer_water
-            length = len(temp_list)
-            for i_value in np.arange(length):
-                if i_value != length - 1:
-                    f.write(str(temp_list[i_value]) + ",")
-                else:
-                    f.write(str(temp_list[i_value]) + "\n")
-            f.write("=========================\t" + "y_predict" + "\t=========================\n")
-
-    with open(file, "a") as f:
-        temp_list = y_predict_1
-        length = len(temp_list)
-        for i_value in np.arange(length):
-            if i_value != length - 1:
-                f.write(str(temp_list[i_value][0]) + ",")
-            else:
-                f.write(str(temp_list[i_value][0]) + "\n")
 
     file = path + "\\finally_calculations_y_predict_1.txt"
     if epoch == 0:
