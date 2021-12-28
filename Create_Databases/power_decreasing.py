@@ -43,7 +43,7 @@ if __name__ == "__main__":
     cursor.execute("USE power_decreasing")
 
     # 若表存在，则卸载该表
-    temp_string_head = "DROP TABLE IF EXISTS power_decreasing, "
+    temp_string_head: str = "DROP TABLE IF EXISTS power_decreasing, "
 
     temp_string_body_1 = drop_table(power_decreasing_path, keywords, 0, 30, 36, 1)
     temp_string_body_2 = drop_table(power_decreasing_path, keywords, 1, 22, 29, 1)
